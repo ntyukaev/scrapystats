@@ -14,6 +14,9 @@ BOT_NAME = 'scannerstats'
 SPIDER_MODULES = ['scannerstats.spiders']
 NEWSPIDER_MODULE = 'scannerstats.spiders'
 
+SPLASH_URL = 'http://localhost:8050/'
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scannerstats (+http://www.yourdomain.com)'
@@ -50,11 +53,21 @@ ROBOTSTXT_OBEY = True
 #    'scannerstats.middlewares.ScannerstatsSpiderMiddleware': 543,
 #}
 
+SPIDER_MIDDLEWARES = {
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
+
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
 #    'scannerstats.middlewares.ScannerstatsDownloaderMiddleware': 543,
 #}
+
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
